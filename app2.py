@@ -1,13 +1,23 @@
 #realizzare un server web che visualizzi l'ora e colori lo sfondo in base all'orario: un colore per la mattina, uno per il pomeriggio, uno per la sera ed uno per la notte
 
 from flask import Flask, render_template
-import datetime
-from datetime import date, timedelt
-
-
 app = Flask(__name__)
+import datetime
 
-today = date.today()
+
+
+@app.route('/')
+def hello_world():
+  minuti = datetime.datetime.now().minute
+  if minuti  %2 == 0:
+    col='green'
+  else:
+    col='red'
+  return render_template('risposta.html',colore=col, min = minuti)
+
+
+
+
 
 
 
