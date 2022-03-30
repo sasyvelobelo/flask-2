@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    return render_template("index.html") #serve per restituire una stringa
+    return render_template("form.html") #serve per restituire una stringa
 
 @app.route('/it', methods=['GET'])
 def ciao_mondo():
