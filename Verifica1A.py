@@ -13,7 +13,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-stazioni=gpd.read_file("/workspace/flask/coordfix_ripetitori_radiofonici_milano_160120_loc_final.csv", sep=";")
+stazioni=pd.read_csv("/workspace/flask/coordfix_ripetitori_radiofonici_milano_160120_loc_final.csv", sep=";")
 
 
 
@@ -23,8 +23,25 @@ def home():
 
 @app.route('/numero', methods=['GET'])
 def home1():
+    global risultato
     risultato=stazioni.groupby("MUNICIPIO")["OPERATORE"].count().reset_index()
     return render_template("link1.html",risultato=risultato.to_html())
+
+@app.route('/grafico', methods=['GET'])
+def grafico():
+    #costruzione del grafico
+
+    fig, ax = plt.subplots(figsize = (6,4))
+
+    x = risultato.MUNICIPIO
+    y = risultato.OPERATORE
+
+    ax.bar(x, y, color = "#304C89")
+
+    #visualizzazione grafico
+    output = io.BytesIO()#stabilire canale comunicazione
+    FigureCanvas(fig).print_png(output)#stampare l'immagine o figura sull output
+    return Response(output.getvalue(), mimetype='image/png')# gli diciamo di mandare in risposta quello che c'è in output però bisogna specificare cosa gli mandiamo con ad esempio 'mimetype='image/png'
 
 @app.route('/input', methods=['GET'])
 def home2():
