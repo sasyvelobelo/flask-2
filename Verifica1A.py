@@ -1,5 +1,5 @@
 #
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, redirect,url_for
 app = Flask(__name__)
 
 import io
@@ -19,7 +19,19 @@ stazioni=pd.read_csv("/workspace/flask/coordfix_ripetitori_radiofonici_milano_16
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template("home.html")
+    return render_template("homepageRaDbuT.html")
+
+@app.route('/selezione', methods=['GET'])
+def selezione():
+    scelta = request.args["scelta"]
+    if scelta == "es1":
+        return redirect(url_for("/numero"))
+    elif scelta == "es2":
+        return redirect(url_for("/numero"))
+    else:
+        return redirect(url_for("/dropdown"))
+        
+    
 
 @app.route('/numero', methods=['GET'])
 def home1():
